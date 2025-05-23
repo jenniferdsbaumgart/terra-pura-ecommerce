@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { 
-  Carousel, 
-  CarouselContent, 
-  CarouselItem, 
-  CarouselNext, 
-  CarouselPrevious 
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import { LeafyGreen, Plus, Heart } from "lucide-react";
@@ -27,44 +27,50 @@ const products: Product[] = [
     id: 1,
     name: "Rosehip Facial Serum",
     price: "$42.00",
-    image: "https://images.unsplash.com/photo-1571937544778-3ad68aa84a36?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image:
+      "https://images.unsplash.com/photo-1571937544778-3ad68aa84a36?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     category: "face",
-    tag: "bestseller"
+    tag: "bestseller",
   },
   {
     id: 2,
     name: "Clay Purifying Mask",
     price: "$38.00",
-    image: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     category: "face",
-    tag: "new"
+    tag: "new",
   },
   {
     id: 3,
     name: "Aloe Hydration Cream",
     price: "$45.00",
-    image: "https://images.unsplash.com/photo-1616740794225-63e524d43ec7?q=80&w=1895&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image:
+      "https://images.unsplash.com/photo-1616740794225-63e524d43ec7?q=80&w=1895&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     category: "moisturizer",
   },
   {
     id: 4,
     name: "Vitamin C Toner",
     price: "$36.00",
-    image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     category: "toner",
   },
   {
     id: 5,
     name: "Chamomile Eye Cream",
     price: "$32.00",
-    image: "https://images.unsplash.com/photo-1608248597202-9cbaecd4aafc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1608248597202-9cbaecd4aafc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     category: "eye",
   },
   {
     id: 6,
     name: "Shea Body Butter",
     price: "$28.00",
-    image: "https://images.unsplash.com/photo-1608248597205-25692d98791b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1608248597205-25692d98791b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     category: "body",
   },
 ];
@@ -73,25 +79,69 @@ const categories = ["all", "face", "moisturizer", "toner", "eye", "body"];
 
 const FeaturedProducts = () => {
   const [activeCategory, setActiveCategory] = useState("all");
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(
+    null
+  );
   const { addItem } = useCart();
-  
-  const filteredProducts = activeCategory === "all" 
-    ? products 
-    : products.filter(product => product.category === activeCategory);
+
+  const filteredProducts =
+    activeCategory === "all"
+      ? products
+      : products.filter((product) => product.category === activeCategory);
 
   const handleAddToCart = (product: Product) => {
     addItem({
       id: product.id,
       name: product.name,
       price: product.price,
-      image: product.image
+      image: product.image,
     });
   };
 
+  const [likedProducts, setLikedProducts] = useState<{
+    [key: number]: boolean;
+  }>({});
+
+  
   return (
-    <section id="products" className="py-24 bg-gradient-to-b from-white to-cream/30">
+    <>
+    {quickViewProduct && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+    <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 relative">
+      <button
+        className="absolute top-3 right-3 text-xl"
+        onClick={() => setQuickViewProduct(null)}
+        aria-label="Close"
+      >
+        &times;
+      </button>
+      <img
+        src={quickViewProduct.image}
+        alt={quickViewProduct.name}
+        className="w-full h-64 object-cover rounded-lg mb-4"
+      />
+      <h2 className="text-2xl font-serif font-bold mb-2">{quickViewProduct.name}</h2>
+      <p className="text-terracotta-dark font-semibold mb-2">{quickViewProduct.price}</p>
+      <p className="text-gray-600 mb-4">Categoria: {quickViewProduct.category}</p>
+      <Button
+        className="w-full bg-gradient-to-r from-terracotta to-terracotta-dark text-white"
+        onClick={() => {
+          handleAddToCart(quickViewProduct);
+          setQuickViewProduct(null);
+        }}
+      >
+        Add to Cart
+      </Button>
+    </div>
+  </div>
+)}
+
+    <section
+      id="products"
+      className="py-24 bg-gradient-to-b from-white to-cream/30"
+    >
       <div className="container mx-auto px-4 md:px-6">
-        <motion.div 
+        <motion.div
           className="mb-12 flex flex-col md:flex-row md:items-end justify-between"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -103,10 +153,11 @@ const FeaturedProducts = () => {
               Featured Products
             </h2>
             <p className="text-walnut-light max-w-lg">
-              Discover our bestselling formulas crafted with pure, natural ingredients
+              Discover our bestselling formulas crafted with pure, natural
+              ingredients
             </p>
           </div>
-          
+
           <div className="flex overflow-x-auto scrollbar-none gap-2 mt-6 md:mt-0 pb-2">
             {categories.map((category) => (
               <button
@@ -123,7 +174,7 @@ const FeaturedProducts = () => {
             ))}
           </div>
         </motion.div>
-        
+
         <Carousel
           opts={{
             align: "start",
@@ -133,8 +184,11 @@ const FeaturedProducts = () => {
         >
           <CarouselContent className="-ml-4">
             {filteredProducts.map((product, index) => (
-              <CarouselItem key={product.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                <motion.div 
+              <CarouselItem
+                key={product.id}
+                className="pl-4 md:basis-1/2 lg:basis-1/3"
+              >
+                <motion.div
                   className="h-full"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -150,25 +204,46 @@ const FeaturedProducts = () => {
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                         {product.tag && (
-                          <div className={`absolute top-3 right-3 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium ${
-                            product.tag === 'bestseller' ? 'text-sage-darker' : 'text-coral-dark'
-                          }`}>
+                          <div
+                            className={`absolute top-3 right-3 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium ${
+                              product.tag === "bestseller"
+                                ? "text-sage-darker"
+                                : "text-coral-dark"
+                            }`}
+                          >
                             {product.tag}
                           </div>
                         )}
                         <div className="absolute top-3 left-3">
-                          <Button 
-                            size="icon" 
-                            variant="ghost" 
+                          <Button
+                            size="icon"
+                            variant="ghost"
                             className="rounded-full bg-white/80 backdrop-blur-sm hover:bg-white w-8 h-8"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setLikedProducts((prev) => ({
+                                ...prev,
+                                [product.id]: !prev[product.id],
+                              }));
+                            }}
                           >
-                            <Heart size={16} className="text-terracotta-dark" />
+                            <Heart
+                              size={16}
+                              className="text-terracotta-dark"
+                              fill={
+                                likedProducts?.[product.id] ? "#E76F51" : "none"
+                              }
+                            />
                           </Button>
                         </div>
-                        <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <Button 
-                            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm text-walnut hover:bg-white/100 opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg font-medium rounded-full"
+                        <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                          <Button
+                            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm text-walnut hover:bg-white/100 opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg font-medium rounded-full pointer-events-auto"
                             size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setQuickViewProduct(product);
+                            }}
                           >
                             Quick View
                           </Button>
@@ -177,17 +252,24 @@ const FeaturedProducts = () => {
                       <div className="p-5 flex flex-col gap-2 bg-white">
                         <div className="flex items-center gap-1">
                           <LeafyGreen className="text-sage-vivid h-4 w-4" />
-                          <span className="text-xs text-sage-darker font-medium">100% Natural</span>
+                          <span className="text-xs text-sage-darker font-medium">
+                            100% Natural
+                          </span>
                         </div>
                         <h3 className="font-serif text-lg font-medium text-walnut group-hover:text-terracotta-dark transition-colors">
                           {product.name}
                         </h3>
-                        <p className="text-terracotta-dark font-semibold">{product.price}</p>
-                        <Button 
+                        <p className="text-terracotta-dark font-semibold">
+                          {product.price}
+                        </p>
+                        <Button
                           className="w-full mt-2 bg-gradient-to-r from-terracotta to-terracotta-dark hover:from-terracotta-dark hover:to-terracotta-darker text-white flex items-center justify-center gap-2 group"
                           onClick={() => handleAddToCart(product)}
                         >
-                          <Plus size={16} className="group-hover:rotate-90 transition-transform duration-300" />
+                          <Plus
+                            size={16}
+                            className="group-hover:rotate-90 transition-transform duration-300"
+                          />
                           Add to Cart
                         </Button>
                       </div>
@@ -198,12 +280,13 @@ const FeaturedProducts = () => {
             ))}
           </CarouselContent>
           <div className="flex justify-end gap-2 mt-6">
-            <CarouselPrevious className="static relative transform-none bg-white hover:bg-terracotta hover:text-white text-terracotta border-terracotta rounded-full transition-colors" />
-            <CarouselNext className="static relative transform-none bg-white hover:bg-terracotta hover:text-white text-terracotta border-terracotta rounded-full transition-colors" />
+            <CarouselPrevious className="relative transform-none bg-white hover:bg-terracotta hover:text-white text-terracotta border-terracotta rounded-full transition-colors" />
+            <CarouselNext className="relative transform-none bg-white hover:bg-terracotta hover:text-white text-terracotta border-terracotta rounded-full transition-colors" />
           </div>
         </Carousel>
       </div>
     </section>
+    </>
   );
 };
 

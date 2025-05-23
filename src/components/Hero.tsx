@@ -56,7 +56,7 @@ const Hero = () => {
       />
       
       {/* Content Side */}
-      <div className="w-full bg-gradient-to-r from-amber-900/20 to-terracotta/60 md:w-1/2 flex items-center justify-center p-8 md:p-16 relative z-10">
+      <div className="w-full bg-gradient-to-b from-cream/20 to-amber-900/40 md:w-1/2 flex items-center justify-center p-8 md:p-16 relative z-10">
         <TextureOverlay variant="grain" opacity="light" />
         <motion.div 
           className="max-w-xl"
@@ -91,7 +91,7 @@ const Hero = () => {
             className="flex flex-col sm:flex-row gap-4"
           >
             <Button 
-              className="bg-gradient-to-r from-terracotta-dark/40 to-terracotta-vivid/30 hover:from-terracotta-darker hover:to-terracotta-dark text-white px-8 py-6 text-lg rounded-md transition-all hover:shadow-lg group"
+              className="bg-gradient-to-r from-terracotta-darker/20 to-terracotta-vivid/30 hover:from-terracotta-darker hover:to-terracotta-dark text-white px-8 py-6 text-lg rounded-md ease-in-out transition-all hover:shadow-lg group"
             >
               <ShoppingBag size={18} className="mr-2 group-hover:scale-110 transition-transform" />
               Shop Now
@@ -99,7 +99,7 @@ const Hero = () => {
             
             <Button 
               variant="outline" 
-              className="border-2 border-terracotta-dark text-terracotta-darker hover:bg-terracotta/10 px-8 py-6 text-lg rounded-md transition-all hover:shadow-md"
+              className="border-2 border-terracotta-dark text-terracotta-darker hover:bg-terracotta-dark hover:text-white px-8 py-6 text-lg rounded-md ease-in-out transition-all hover:shadow-md"
             >
               Learn More
             </Button>
